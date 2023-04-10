@@ -8,7 +8,6 @@ class Person
   attr_accessor :name, :age
   attr_reader :id
 
-
   def can_use_services?
     of_age? || parent_permission ? true : false
   end
