@@ -1,4 +1,6 @@
 require './nameable'
+require './capitalize.rb'
+require './trim.rb'
 
 class Person < Nameable
   def initialize(age, name = 'Unknown', _parent_permission: true)
