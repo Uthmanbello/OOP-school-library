@@ -54,19 +54,25 @@ def main
       puts "Book created successfully"
     when 5
       puts "Select a book from the following list by number:"
-    #   puts "Enter person id:"
-    #   person_id = gets.chomp.to_i
-    #   puts "Enter book id:"
-    #   book_id = gets.chomp.to_i
-    #   puts "Enter rented on date (YYYY-MM-DD):"
-    #   rented_on = Date.parse(gets.chomp)
-    #   puts "Enter due on date (YYYY-MM-DD):"
-    #   due_on = Date.parse(gets.chomp)
-    #   library.create_rental(person_id, book_id, rented_on, due_on)
+      app.books.each_with_index do |book, index|
+        puts "#{index}) Title: #{book.title}, Author: #{book.author}"
+      end
+      book = gets.chomp.to_i
+
+      puts "Select a person from the following list by number (not id):"
+      app.people.each_with_index do |person, index|
+        puts "#{index}) [#{person.class.name}] Name: #{person.name}, ID: #{person.id}, Age: #{person.age}"
+      end
+      person = gets.chomp.to_i
+
+      puts "Date (YYYY-MM-DD):"
+      date = Date.parse(gets.chomp)
+      app.create_rental(app.books[book], app.people[person], date)
+      puts "Rental created successfully"
     when 6
       puts "ID of person:"
-      id = gets.chomp.to_i
-    #   library.list_rentals_for_person(person_id)
+      person_id = gets.chomp.to_i
+      app.list_rentals_for_person(person_id)
     when 7
       puts "Thank you for using this app!"
       break

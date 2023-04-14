@@ -43,9 +43,17 @@ class App
     book
   end
 
-#   def create_rental
-#   end
+  def create_rental(book, person, date)
+    rental = Rental.new(date, book, person)
+    @rentals.push(rental)
+    rental
+  end
 
-#   def list_rentals_for_person
-#   end
+  def list_rentals_for_person(person_id)
+    rentals = @rentals.select { |rental| rental.person.id == person_id }
+    puts "Rentals:"
+    rentals.each do |rental|
+      puts "Date: #{rental.date}, Book: #{rental.book.title} by #{rental.book.author}"
+    end
+  end
 end
