@@ -1,4 +1,4 @@
 #!/usr/bin/env ruby
-puts "What is your class?"
+puts 'What is your class?'
 name = gets.chomp
 puts "class what again, #{name}!"
