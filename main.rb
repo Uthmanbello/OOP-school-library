@@ -3,11 +3,12 @@ require './app'
 
 def main
   app = App.new
+  menu = Menu.new
 
   loop do
-    app.display_menu
+    menu.display_menu
     option = gets.chomp.to_i
-    break if app.process_option(option, app)
+    break if menu.process_option(option, app)
   end
 end
 
