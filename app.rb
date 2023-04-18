@@ -4,6 +4,7 @@ require './person'
 require './student'
 require './teacher'
 require './menu'
+require './lister'
 
 class App
   attr_accessor :books, :rentals, :people, :student, :teacher
@@ -15,15 +16,11 @@ class App
   end
 
   def list_books
-    @books.each do |book|
-      puts "Title: #{book.title}, Author: #{book.author}"
-    end
+    Lister.new(@books).list_books
   end
 
   def list_people
-    @people.each do |person|
-      puts "[#{person.class.name}] Name: #{person.name}, ID: #{person.id}, Age: #{person.age}"
-    end
+    Lister.new(@people).list_people
   end
 
   def create_person
@@ -105,9 +102,7 @@ class App
     person_id = gets.chomp.to_i
     rentals = @rentals.select { |rental| rental.person.id == person_id }
     puts 'Rentals:'
-    rentals.each do |rental|
-      puts "Date: #{rental.date}, Book: '#{rental.book.title}' by #{rental.book.author}"
-    end
+    Lister.new(@rentals).list_rentals
   end
 
   private :push_person_to_list, :create_teacher, :create_student, :person_type_input
