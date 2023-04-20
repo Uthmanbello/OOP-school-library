@@ -31,9 +31,9 @@ RSpec.describe Person do
       end
     end
 
-  describe '#correct_name' do
-    it 'should return the person\'s name' do
-      expect(person.correct_name).to eq 'John'
+    describe '#correct_name' do
+      it 'should return the person\'s name' do
+        expect(person.correct_name).to eq 'John'
       end
     end
 
