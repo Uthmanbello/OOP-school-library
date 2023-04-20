@@ -102,7 +102,7 @@ class App
     person_id = gets.chomp.to_i
     rentals = @rentals.select { |rental| rental.person.id == person_id }
     puts 'Rentals:'
-    Lister.new(@rentals).list_rentals
+    Lister.new(rentals).list_rentals
   end
 
   private :push_person_to_list, :create_teacher, :create_student, :person_type_input
