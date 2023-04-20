@@ -68,14 +68,14 @@ class App
 
   def preserve_rental
     rental_objects = @rentals.map do |rental|
-      book = { title: rental.book.title, author: rental.book.author }
+      book_obj = { title: rental.book.title, author: rental.book.author }
       person_data = { age: rental.person.age, name: rental.person.name, id: rental.person.id }
       if rental.person.is_a?(Student)
         person_data[:classroom] = rental.person.classroom
       else
         person_data[:specialization] = rental.person.specialization
       end
-      { date: rental.date, book:, person: person_data }
+      { date: rental.date, book: book_obj, person: person_data }
     end
     File.write('rentals.json', rental_objects.to_json)
   end
