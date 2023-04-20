@@ -11,9 +11,10 @@ class App
   attr_accessor :books, :rentals, :people, :student, :teacher
 
   def initialize
+    r = Rentals.new
     @books = add_books || []
     @people = add_people || []
-    @rentals = add_rentals || []
+    @rentals = r.add_rentals || []
   end
 
   def preseve_book
@@ -77,26 +78,6 @@ class App
       { date: rental.date, book:, person: person_data }
     end
     File.write('rentals.json', rental_objects.to_json)
-  end
-
-  def add_rentals
-    rentals = []
-    if File.exist?('rentals.json') && !File.empty?('rentals.json')
-      data = JSON.parse(File.read('rentals.json'))
-      data.each do |rental_data|
-        book_data = rental_data['book']
-        person_data = rental_data['person']
-        book = Book.new(book_data['title'], book_data['author'])
-        person = if person_data['type'] == 'Student'
-                   Student.new(person_data['age'], person_data['classrom'], person_data['name'])
-                 else
-                   Teacher.new(person_data['age'], person_data['specialization'], person_data['name'])
-                 end
-        person.id = person_data['id']
-        rentals << Rental.new(rental_data['date'], book, person)
-      end
-    end
-    rentals
   end
 
   def list_books
@@ -193,4 +174,26 @@ class App
   end
 
   private :push_person_to_list, :create_teacher, :create_student, :person_type_input
+end
+
+class Rentals
+  def add_rentals
+    rentals = []
+    if File.exist?('rentals.json') && !File.empty?('rentals.json')
+      data = JSON.parse(File.read('rentals.json'))
+      data.each do |rental_data|
+        book_data = rental_data['book']
+        person_data = rental_data['person']
+        book = Book.new(book_data['title'], book_data['author'])
+        person = if person_data['type'] == 'Student'
+                   Student.new(person_data['age'], person_data['classrom'], person_data['name'])
+                 else
+                   Teacher.new(person_data['age'], person_data['specialization'], person_data['name'])
+                 end
+        person.id = person_data['id']
+        rentals << Rental.new(rental_data['date'], book, person)
+      end
+    end
+    rentals
+  end
 end
