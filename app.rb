@@ -17,32 +17,33 @@ class App
   end
 
   def preseve_book
-    puts "Preserve the books"
+    puts 'Preserve the books'
     books_ojects = []
-    @books.each {|book| books_ojects << {title: book.title,author:book.author}}
-    File.write("books.json",books_ojects.to_json)
+    @books.each { |book| books_ojects << { title: book.title, author: book.author } }
+    File.write('books.json', books_ojects.to_json)
   end
 
   def add_books
     books = []
-    if File.exist?("books.json") && !File.empty?("books.json")
-    data = JSON.parse(File.read("books.json")) 
-    data.each{ |book| books << Book.new(book['title'],book['author'])}
+    if File.exist?('books.json') && !File.empty?('books.json')
+      data = JSON.parse(File.read('books.json'))
+      data.each { |book| books << Book.new(book['title'], book['author']) }
     end
     books
   end
 
   def preserve_person
-    people_ojects =[]
-    @people.each do |people| 
-    if people.class.name == 'Student'
-        people_ojects << {age: people.age,classroom:people.classroom,name:people.name,id: people.id,parent_permission:people.parent_permission,type:people.class.name}
-    else
-        people_ojects << {age: people.age,id: people.id,specialization:people.specialization,name:people.name,type:people.class.name}
+    people_ojects = []
+    @people.each do |people|
+      people_ojects << if people.instance_of?(::Student)
+                         { age: people.age, classroom: people.classroom, name: people.name, id: people.id,
+                           parent_permission: people.parent_permission, type: people.class.name }
+                       else
+                         { age: people.age, id: people.id, specialization: people.specialization, name: people.name,
+                           type: people.class.name }
+                       end
     end
-
-    end
-    File.write("people.json",people_ojects.to_json)
+    File.write('people.json', people_ojects.to_json)
   end
 
   def add_people
@@ -50,14 +51,14 @@ class App
     if File.exist?('people.json') && !File.empty?('people.json')
       data = JSON.parse(File.read('people.json'))
       data.each do |person|
-        if person['type'] == "Student"
-        student = Student.new(person['age'], person['name'], person['classroom'] )
-        student.id = person['id']
-        people<< student
+        if person['type'] == 'Student'
+          student = Student.new(person['age'], person['name'], person['classroom'])
+          student.id = person['id']
+          people << student
         else
-        teacher = Teacher.new(person['age'],person['name'], person['specialization'])
-        teacher.id = person['id']
-        people<< teacher
+          teacher = Teacher.new(person['age'], person['name'], person['specialization'])
+          teacher.id = person['id']
+          people << teacher
         end
       end
     end
@@ -65,22 +66,17 @@ class App
   end
 
   def preserve_rental
-  rental_objects = @rentals.map do |rental|
-        book = { title: rental.book.title, author: rental.book.author }
-        person_data = {
-          age: rental.person.age,
-          name: rental.person.name,
-          id: rental.person.id
-        }
-        if rental.person.is_a?(Student)
-          person_data[:classroom] = rental.person.classroom
-        else
-          person_data[:specialization] = rental.person.specialization
-        end
-        { date: rental.date, book: book, person: person_data }
+    rental_objects = @rentals.map do |rental|
+      book = { title: rental.book.title, author: rental.book.author }
+      person_data = { age: rental.person.age, name: rental.person.name, id: rental.person.id }
+      if rental.person.is_a?(Student)
+        person_data[:classroom] = rental.person.classroom
+      else
+        person_data[:specialization] = rental.person.specialization
       end
-      File.write("rentals.json", rental_objects.to_json)
+      { date: rental.date, book:, person: person_data }
     end
+    File.write('rentals.json', rental_objects.to_json)
   end
 
   def add_rentals
@@ -91,11 +87,11 @@ class App
         book_data = rental_data['book']
         person_data = rental_data['person']
         book = Book.new(book_data['title'], book_data['author'])
-        if person_data['type'] == "Student"
-          person = Student.new(person_data['age'], person_data['classrom'], person_data['name'])
-        else
-          person = Teacher.new(person_data['age'], person_data['specialization'], person_data['name'])
-        end
+        person = if person_data['type'] == 'Student'
+                   Student.new(person_data['age'], person_data['classrom'], person_data['name'])
+                 else
+                   Teacher.new(person_data['age'], person_data['specialization'], person_data['name'])
+                 end
         person.id = person_data['id']
         rentals << Rental.new(rental_data['date'], book, person)
       end
@@ -184,7 +180,7 @@ class App
 
     rental = Rental.new(date, @books[book], @people[person])
     @rentals.push(rental)
-    preseve_rental
+    preserve_rental
     puts 'Rental created successfully'
   end
 
