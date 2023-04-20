@@ -12,13 +12,12 @@ class App
 
   def initialize
     @books = add_books || []
-    @people = []
+    @people = add_people || []
     @rentals = []
   end
 
   # start
-  def preseve_data
-    # Preserve Books
+  def preseve_book
     puts "Preserve the books"
     books_ojects = []
     @books.each {|book| books_ojects << {title: book.title,author:book.author}}
@@ -32,6 +31,38 @@ class App
       data.each{ |book| books << Book.new(book['title'],book['author'])}
     end
     books
+  end
+
+  def preseve_person
+    people_ojects =[]
+    @people.each do |people| 
+      if people.class.name == 'Student'
+        people_ojects << {age: people.age,classroom:people.classroom,name:people.name,id: people.id,parent_permission:people.parent_permission,type:people.class.name}
+      else
+        people_ojects << {age: people.age,id: people.id,specialization:people.specialization,name:people.name,type:people.class.name}
+      end
+
+    end
+    File.write("people.json",people_ojects.to_json)
+  end
+
+  def add_people
+    people = []
+    if File.exist?('people.json') && !File.empty?('people.json')
+      data = JSON.parse(File.read('people.json'))
+      data.each do |person|
+        if person['type'] == "Student"
+          student = Student.new(person['age'],person['classroom'],person['name'] )
+          student.id = person['id']
+          people<< student
+        else
+          teacher = Teacher.new(person['age'],person['name'], person['specialization'])
+          teacher.id = person['id']
+          people<< teacher
+        end
+      end
+    end
+    people
   end
   # end
   def list_books
@@ -53,6 +84,7 @@ class App
       return
     end
     push_person_to_list(person)
+    preseve_person
     puts 'Person created successfully'
   end
 
@@ -92,7 +124,7 @@ class App
     author = gets.chomp
     book = Book.new(title, author)
     @books.push(book)
-    preseve_data
+    preseve_book
     puts 'Book created successfully'
   end
 
