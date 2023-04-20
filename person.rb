@@ -3,7 +3,7 @@ require './capitalize'
 require './trim'
 
 class Person < Nameable
-  attr_accessor :name, :age, :id
+  attr_accessor :name, :age, :id, :parent_permission
   attr_reader :rentals
 
   def initialize(age, name = 'Unknown', _parent_permission: true)
