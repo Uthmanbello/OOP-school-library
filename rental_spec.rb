@@ -20,5 +20,5 @@ describe Rental do
       expect(book.rentals).to include(rental)
       expect(person.rentals).to include(rental)
     end
-  end  
+  end
 end
