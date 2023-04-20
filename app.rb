@@ -64,6 +64,45 @@ class App
     people
   end
 
+  def preserve_rental
+  rental_objects = @rentals.map do |rental|
+        book = { title: rental.book.title, author: rental.book.author }
+        person_data = {
+          age: rental.person.age,
+          name: rental.person.name,
+          id: rental.person.id
+        }
+        if rental.person.is_a?(Student)
+          person_data[:classroom] = rental.person.classroom
+        else
+          person_data[:specialization] = rental.person.specialization
+        end
+        { date: rental.date, book: book, person: person_data }
+      end
+      File.write("rentals.json", rental_objects.to_json)
+    end
+  end
+
+  def add_rentals
+    rentals = []
+    if File.exist?('rentals.json') && !File.empty?('rentals.json')
+      data = JSON.parse(File.read('rentals.json'))
+      data.each do |rental_data|
+        book_data = rental_data['book']
+        person_data = rental_data['person']
+        book = Book.new(book_data['title'], book_data['author'])
+        if person_data['type'] == "Student"
+          person = Student.new(person_data['age'], person_data['classrom'], person_data['name'])
+        else
+          person = Teacher.new(person_data['age'], person_data['specialization'], person_data['name'])
+        end
+        person.id = person_data['id']
+        rentals << Rental.new(rental_data['date'], book, person)
+      end
+    end
+    rentals
+  end
+
   def list_books
     Lister.new(@books).list_books
   end
