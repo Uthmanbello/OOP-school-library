@@ -3,8 +3,8 @@ require './capitalize'
 require './trim'
 
 class Person < Nameable
-  attr_accessor :name, :age
-  attr_reader :id, :rentals
+  attr_accessor :name, :age, :id
+  attr_reader :rentals
 
   def initialize(age, name = 'Unknown', _parent_permission: true)
     @id = Random.rand(1..1000)

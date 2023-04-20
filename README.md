@@ -58,13 +58,18 @@ Clone this repository to your desired folder:
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-## 👥 Author <a name="authors"></a>
+## 👥 Authors <a name="authors"></a>
 
 👤 **Uthman Igein Bello-Imoukhuede**
 
 - GitHub: [Uthmanbello](https://github.com/Uthmanbello)
 - Twitter: [@UthmanDeRoyale](https://twitter.com/UthmanDeRoyale)
-- LinkedIn: [Uthman Igein Bello-Imoukhuede](linkedin.com/in/uthmanbelloimoukhuede)
+- LinkedIn: [Uthman Igein Bello-Imoukhuede](https://www.linkedin.com/in/uthmanbelloimoukhuede)
+
+👤 **Diego Salamanca**
+
+- GitHub: [dfsalam](https://github.com/dfsalam)
+- LinkedIn: [Diego Salamanca](https://www.linkedin.com/in/dfsalamdev/)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
