@@ -5,16 +5,35 @@ require './student'
 require './teacher'
 require './menu'
 require './lister'
+require 'json'
 
 class App
   attr_accessor :books, :rentals, :people, :student, :teacher
 
   def initialize
-    @books = []
+    @books = add_books || []
     @people = []
     @rentals = []
   end
 
+  # start
+  def preseve_data
+    # Preserve Books
+    puts "Preserve the books"
+    books_ojects = []
+    @books.each {|book| books_ojects << {title: book.title,author:book.author}}
+    File.write("books.json",books_ojects.to_json)
+  end
+
+  def add_books
+    books = []
+    if File.exist?("books.json") && File.read("books.json") !='' 
+      data = JSON.parse(File.read("books.json")) 
+      data.each{ |book| books << Book.new(book['title'],book['author'])}
+    end
+    books
+  end
+  # end
   def list_books
     Lister.new(@books).list_books
   end
@@ -73,6 +92,7 @@ class App
     author = gets.chomp
     book = Book.new(title, author)
     @books.push(book)
+    preseve_data
     puts 'Book created successfully'
   end
 
