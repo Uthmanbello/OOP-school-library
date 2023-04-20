@@ -4,7 +4,7 @@ require './teacher'
 
 describe Teacher do
   before(:each) do
-    @teacher = Teacher.new(30, "John", "Math")
+    @teacher = Teacher.new(30, "Robert", "History")
   end
 
   it "has an age" do
@@ -12,11 +12,11 @@ describe Teacher do
   end
 
   it "has a name" do
-    expect(@teacher.name).to eq("John")
+    expect(@teacher.name).to eq("Robert")
   end
 
   it "has a specialization" do
-    expect(@teacher.specialization).to eq("Math")
+    expect(@teacher.specialization).to eq("History")
   end
 
   it "can use services" do
