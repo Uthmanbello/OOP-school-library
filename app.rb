@@ -13,10 +13,9 @@ class App
   def initialize
     @books = add_books || []
     @people = add_people || []
-    @rentals = []
+    @rentals = add_rentals || []
   end
 
-  # start
   def preseve_book
     puts "Preserve the books"
     books_ojects = []
@@ -26,21 +25,21 @@ class App
 
   def add_books
     books = []
-    if File.exist?("books.json") && File.read("books.json") !='' 
-      data = JSON.parse(File.read("books.json")) 
-      data.each{ |book| books << Book.new(book['title'],book['author'])}
+    if File.exist?("books.json") && !File.empty?("books.json")
+    data = JSON.parse(File.read("books.json")) 
+    data.each{ |book| books << Book.new(book['title'],book['author'])}
     end
     books
   end
 
-  def preseve_person
+  def preserve_person
     people_ojects =[]
     @people.each do |people| 
-      if people.class.name == 'Student'
+    if people.class.name == 'Student'
         people_ojects << {age: people.age,classroom:people.classroom,name:people.name,id: people.id,parent_permission:people.parent_permission,type:people.class.name}
-      else
+    else
         people_ojects << {age: people.age,id: people.id,specialization:people.specialization,name:people.name,type:people.class.name}
-      end
+    end
 
     end
     File.write("people.json",people_ojects.to_json)
@@ -52,19 +51,19 @@ class App
       data = JSON.parse(File.read('people.json'))
       data.each do |person|
         if person['type'] == "Student"
-          student = Student.new(person['age'],person['classroom'],person['name'] )
-          student.id = person['id']
-          people<< student
+        student = Student.new(person['age'], person['name'], person['classroom'] )
+        student.id = person['id']
+        people<< student
         else
-          teacher = Teacher.new(person['age'],person['name'], person['specialization'])
-          teacher.id = person['id']
-          people<< teacher
+        teacher = Teacher.new(person['age'],person['name'], person['specialization'])
+        teacher.id = person['id']
+        people<< teacher
         end
       end
     end
     people
   end
-  # end
+
   def list_books
     Lister.new(@books).list_books
   end
@@ -84,7 +83,7 @@ class App
       return
     end
     push_person_to_list(person)
-    preseve_person
+    preserve_person
     puts 'Person created successfully'
   end
 
@@ -146,6 +145,7 @@ class App
 
     rental = Rental.new(date, @books[book], @people[person])
     @rentals.push(rental)
+    preseve_rental
     puts 'Rental created successfully'
   end
 
